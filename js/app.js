@@ -22,14 +22,16 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x=this.x+(this.speed*dt);
+    // if the enemy is off screen
     if (this.x>500){
-        this.x=10;
+        this.x=-10;
     }
-    
-    if ((this.x===player.x)&&(this.y===player.y))
+    // checking for collisions
+    if ((this.x>=player.x-40)&&(this.y>=player.y-40)&&(this.x<=player.x+40)&&(this.y<=player.y+40))
         {
             console.log('You Lose');
-            player=new player();
+            player.x=202;
+            player.y=383;
         }
   
 };
@@ -47,6 +49,7 @@ var Player = function (x,y) {
     var obj =Object.create(Player.prototype);
     obj.x=x;
     obj.y=y;
+    obj.score=0;
     this.sprite= 'images/char-boy.png';
     return obj;
 };
@@ -64,31 +67,62 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get('images/char-boy.png'), this.x, this.y);
 };
 
+// check when the player has reached the sea
 Player.prototype.checkwin=function(){
     if (this.y<=-17)
         {
             this.x=202;
             this.y=383;
-           console.log('WIN')
+            this.score++;
+            $("h1").text('Score=' +this.score);
         }
+}
+// check if the player goes out of screen
+Player.prototype.checkout=function(){
+    if (this.y>=480)
+        {
+            this.x=202;
+            this.y=383;
+        }
+    if (this.x>=450)
+        {
+            this.x=2;
+            
+        }
+       if (this.x<=0)
+        {
+            this.x=450;
+            
+        }
+            
+
+
 }
 Player.prototype.handleInput = function(key) {
 switch(key){
     case 'up':
         this.y-=50;
         this.checkwin();
+        this.checkout();
+        //console.log(this.x," ",this.y);
         break;
     case 'down':
         this.y+=50;
         this.checkwin();
+         this.checkout();
+         // console.log(this.x," ",this.y);
         break;
     case 'left':
         this.x-=50;
         this.checkwin();
+         this.checkout();
+         // console.log(this.x," ",this.y);
         break;
     case 'right':
         this.x+=50;
         this.checkwin();
+         this.checkout();
+        // console.log(this.x," ",this.y);
         break;
         
 }
