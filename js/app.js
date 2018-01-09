@@ -1,11 +1,18 @@
 // Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+var Enemy = function (x, y, speed) {
+    // Variables applied to each of our instances go here,,l
+    // we've provided one for you to get startedd
+    var obj= Object.create(Enemy.prototype);
+    obj.x= x;
+    obj.y=y;
+    obj.speed=speed;
+   
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+     return obj;
+    
 };
 
 // Update the enemy's position, required method for game
@@ -14,21 +21,93 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x=this.x+(this.speed*dt);
+    if (this.x>500){
+        this.x=10;
+    }
+    
+    if ((this.x===player.x)&&(this.y===player.y))
+        {
+            console.log('You Lose');
+            player=new player();
+        }
+  
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+
+    ctx.drawImage(Resources.get('images/enemy-bug.png'), this.x, this.y);
 };
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+var Player = function (x,y) {
+    var obj =Object.create(Player.prototype);
+    obj.x=x;
+    obj.y=y;
+    this.sprite= 'images/char-boy.png';
+    return obj;
+};
+
+Player.prototype.update = function(dt,x,y) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+   // this.x=(this.x*dt)+x;
+//    this.y=(this.y*dt)+y;
+    
+};
+Player.prototype.render = function() {
+
+    ctx.drawImage(Resources.get('images/char-boy.png'), this.x, this.y);
+};
+
+Player.prototype.checkwin=function(){
+    if (this.y<=-17)
+        {
+            this.x=202;
+            this.y=383;
+           console.log('WIN')
+        }
+}
+Player.prototype.handleInput = function(key) {
+switch(key){
+    case 'up':
+        this.y-=50;
+        this.checkwin();
+        break;
+    case 'down':
+        this.y+=50;
+        this.checkwin();
+        break;
+    case 'left':
+        this.x-=50;
+        this.checkwin();
+        break;
+    case 'right':
+        this.x+=50;
+        this.checkwin();
+        break;
+        
+}
+};
+
+
 
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+var allEnemies=[];
+var player= new Player(202,383,1);
+
+for (i=1;i<4;i++){
+  allEnemies[i]= new Enemy(10,83*i,i*50);
+  
+}
+
 
 
 
