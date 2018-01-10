@@ -2,16 +2,13 @@
 var Enemy = function (x, y, speed) {
     // Variables applied to each of our instances go here,,l
     // we've provided one for you to get startedd
-    var obj= Object.create(Enemy.prototype);
-    obj.x= x;
-    obj.y=y;
-    obj.speed=speed;
-   
-
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-     return obj;
+     return this;
     
 };
 
@@ -46,12 +43,12 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function (x,y) {
-    var obj =Object.create(Player.prototype);
-    obj.x=x;
-    obj.y=y;
-    obj.score=0;
+
+    this.x=x;
+    this.y=y;
+    this.score=0;
     this.sprite= 'images/char-boy.png';
-    return obj;
+    return this;
 };
 
 Player.prototype.update = function(dt,x,y) {
